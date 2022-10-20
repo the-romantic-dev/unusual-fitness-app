@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">UnusualFitnessApp</string>
+    <string name="train_duration_label">Duration</string>
+    <string name="start_training_button_content_description">start training</string>
+</resources>
