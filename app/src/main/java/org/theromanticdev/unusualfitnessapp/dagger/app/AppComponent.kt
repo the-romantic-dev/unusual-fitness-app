@@ -1,20 +1,22 @@
 package org.theromanticdev.unusualfitnessapp.dagger.app
 
-import android.app.Service
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import org.theromanticdev.unusualfitnessapp.dagger.trainFragment.TrainFragmentComponent
-import org.theromanticdev.unusualfitnessapp.services.TrainingService
+import org.theromanticdev.unusualfitnessapp.dagger.trainFragment.WorkoutFragmentComponent
+import org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutResultFragment
+import org.theromanticdev.unusualfitnessapp.services.WorkoutService
 import javax.inject.Singleton
 
 @Component(modules = [AppModule::class])
 @Singleton
 interface AppComponent {
 
-    fun injectIntoTrainService(service: TrainingService)
+    fun injectIntoWorkoutService(service: WorkoutService)
 
-    fun trainComponent(): TrainFragmentComponent.Builder
+    fun injectIntoWorkoutResultFragment(fragment: WorkoutResultFragment)
+
+    fun trainComponent(): WorkoutFragmentComponent.Builder
 
     fun context(): Context
 

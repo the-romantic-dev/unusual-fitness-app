@@ -20,7 +20,7 @@
         android:theme="@style/Theme.UnusualFitnessApp"
         tools:targetApi="31">
         <service
-            android:name="org.theromanticdev.unusualfitnessapp.services.TrainingService"
+            android:name="org.theromanticdev.unusualfitnessapp.services.WorkoutService"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location"

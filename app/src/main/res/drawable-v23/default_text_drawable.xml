@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/map_user_point_circle"
+        android:width="@dimen/text_medium"
+        android:height="@dimen/text_medium"
+        />
+
+</layer-list>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:parentTag="android.widget.FrameLayout"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:drawablePadding="8dp"
+        android:id="@+id/result_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Label:"
+        android:layout_gravity="start"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_medium"
+        tools:ignore="HardcodedText"
+        app:drawableStartCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/result_value"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="0 units"
+        android:layout_gravity="end"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_medium"
+        tools:ignore="HardcodedText" />
+
+</merge>

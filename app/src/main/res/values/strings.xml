@@ -2,4 +2,7 @@
     <string name="app_name">UnusualFitnessApp</string>
     <string name="train_duration_label">Duration</string>
     <string name="start_training_button_content_description">start training</string>
+    <string name="result_fragment_workout_result_content_description">workout type</string>
+    <string name="result_distance_label">Расстояние:</string>
+    <string name="result_distance_units">км</string>
 </resources>

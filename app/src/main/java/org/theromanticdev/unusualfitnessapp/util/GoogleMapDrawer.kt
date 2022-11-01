@@ -1,18 +1,21 @@
 package org.theromanticdev.unusualfitnessapp.util
 
 import android.graphics.Bitmap
-import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import javax.inject.Inject
 
-class GoogleMapDrawer @Inject constructor(private val userMarkerBitmap: Bitmap) {
+object GoogleMapDrawer {
 
     private var userMarker: Marker? = null
 
-    fun showUserLocationOnMap(
-        mapFragment: SupportMapFragment, location: LatLng) {
+    private var polyline: Polyline? = null
+
+    fun drawMarker(
+        marker: Bitmap,
+        mapFragment: SupportMapFragment,
+        location: LatLng
+    ){
         mapFragment.getMapAsync { googleMap ->
             val user = LatLng(location.latitude, location.longitude)
 
@@ -23,20 +26,40 @@ class GoogleMapDrawer @Inject constructor(private val userMarkerBitmap: Bitmap) 
             userMarker = googleMap.addMarker(
                 MarkerOptions()
                     .position(user)
-                    .icon(BitmapDescriptorFactory.fromBitmap(userMarkerBitmap))
+                    .icon(BitmapDescriptorFactory.fromBitmap(marker))
+                    .anchor(0.5f, 0.5f)
             )
-            googleMap.setMinZoomPreference(15f)
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(user))
         }
     }
 
-    fun drawPolyline(mapFragment: SupportMapFragment, pos1: LatLng, pos2: LatLng) {
-        mapFragment.getMapAsync { googleMap ->
-            googleMap.addPolyline(
-                PolylineOptions().add(
-                    pos1,
-                    pos2
-                )
+    fun moveCamera(
+        mapFragment: SupportMapFragment,
+        location: LatLng
+    ) {
+        mapFragment.getMapAsync { map ->
+            map.moveCamera(CameraUpdateFactory.newLatLng(location))
+        }
+    }
+
+    fun moveCameraAndZoom(
+        mapFragment: SupportMapFragment,
+        location: LatLng,
+        zoom: Float
+    ) {
+        mapFragment.getMapAsync { map ->
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom))
+        }
+    }
+
+    fun drawPolyline(mapFragment: SupportMapFragment, points: List<LatLng>) {
+        mapFragment.getMapAsync { map ->
+            if (polyline != null) polyline!!.remove()
+            polyline = map.addPolyline(
+                PolylineOptions()
+                    .addAll(points)
+                    .color(0xffff0000.toInt())
+                    .jointType(JointType.ROUND)
+                    .width(25f)
             )
         }
     }

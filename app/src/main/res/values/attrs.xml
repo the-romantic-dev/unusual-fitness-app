@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="WorkoutResultsLine">
+        <attr name="resultLabel" format="string"/>
+        <attr name="resultValue" format="string"/>
+        <attr name="resultUnits" format="string"/>
+        <attr name="iconSrc" format="reference"/>
+    </declare-styleable>
+</resources>

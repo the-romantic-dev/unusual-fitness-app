@@ -3,13 +3,36 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.237" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/ic_navigation_96_red.xml" value="0.121" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/ic_pause_96.xml" value="0.237" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/ic_play_96.xml" value="0.237" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/ic_user_location_96_white.xml" value="0.1295" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/time_96.xml" value="0.146" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/train_play_96.xml" value="0.146" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/drawable/train_stop_96.xml" value="0.146" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/activity_main.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_history.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_music.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_train.xml" value="0.2" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_train_result.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_workout.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/Public/AndroidStudioProjects/app/src/main/res/layout/fragment_workout_result.xml" value="0.2" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable-v23/default_text_drawable.xml" value="0.121" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.17" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/default_text_drawable.xml" value="0.12" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_distance.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_time.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_user_location_96_white.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/result_distance.xml" value="0.176" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/result_time.xml" value="0.121" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/time_96.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/workout_pause_96.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workout.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workout_result.xml" value="0.2" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workout_result_description.xml" value="0.2" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workout_results_lint.xml" value="0.20521590423257802" />
       </map>
     </option>
   </component>

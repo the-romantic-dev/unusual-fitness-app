@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.TrainFragment"
+        android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutFragment"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
