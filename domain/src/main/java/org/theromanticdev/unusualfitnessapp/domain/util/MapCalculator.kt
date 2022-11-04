@@ -15,11 +15,11 @@ object MapCalculator {
     fun minZoomForHeightAndWidth(
         metersHeight: Int,
         metersWidth: Int,
-        heightPixels: Int,
-        widthPixels: Int
+        pixelsHeight: Int,
+        pixelsWidth: Int
     ): Float {
         val meters = max(metersHeight, metersWidth)
-        val pixels = min(heightPixels, widthPixels)
+        val pixels = min(pixelsHeight, pixelsWidth)
         return metersAndPixelsToZoom(meters, pixels)
     }
 

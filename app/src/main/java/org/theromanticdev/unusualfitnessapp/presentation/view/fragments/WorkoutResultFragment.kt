@@ -69,8 +69,8 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
         val minZoom = MapCalculator.minZoomForHeightAndWidth(
             metersHeight = viewModel.workoutResult.routeHeightMeters,
             metersWidth = viewModel.workoutResult.routeWidthMeters,
-            heightPixels = mapHeight.toInt(),
-            widthPixels = requireActivity().screenWidthInDP
+            pixelsHeight = mapHeight.toInt(),
+            pixelsWidth = requireActivity().screenWidthInDP
         )
 
         GoogleMapDrawer.moveCameraAndZoom(

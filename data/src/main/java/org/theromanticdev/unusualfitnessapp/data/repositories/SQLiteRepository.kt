@@ -16,23 +16,6 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
         DatabaseHelper(applicationContext).writableDatabase
     }
 
-    private fun addTrainRoute(points: List<Point>, id: Int) {
-        val contextValues = ContentValues().apply {
-            for (p in points) {
-                put(PointsTable.COLUMN_TRAIN_ID, id)
-                put(PointsTable.COLUMN_LATITUDE, p.latitude)
-                put(PointsTable.COLUMN_LONGITUDE, p.longitude)
-            }
-        }
-
-        database.insertOrThrow(
-            PointsTable.TABLE_NAME,
-            null,
-            contextValues
-        )
-
-    }
-
     override fun addTrainInfo(trainInfo: TrainInfo) {
         val contextValues = ContentValues().apply {
             put(WorkoutsTable.COLUMN_TYPE, trainInfo.type)
@@ -79,6 +62,10 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
         }
     }
 
+    override fun deleteTrainInfoById(id: Int) {
+        TODO("Not yet implemented")
+    }
+
     private fun getTrainRouteById(id: Int): List<Point> {
         val cursor = database.query(
             PointsTable.TABLE_NAME,
@@ -106,6 +93,23 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
         }
     }
 
+    private fun addTrainRoute(points: List<Point>, id: Int) {
+        val contextValues = ContentValues().apply {
+            for (p in points) {
+                put(PointsTable.COLUMN_TRAIN_ID, id)
+                put(PointsTable.COLUMN_LATITUDE, p.latitude)
+                put(PointsTable.COLUMN_LONGITUDE, p.longitude)
+            }
+        }
+
+        database.insertOrThrow(
+            PointsTable.TABLE_NAME,
+            null,
+            contextValues
+        )
+
+    }
+
     private fun getLastIdFromWorkouts(): Int {
         val cursor = database.query(
             WorkoutsTable.TABLE_NAME,
@@ -119,10 +123,6 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
             cursor.moveToFirst()
             cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_ID))
         }
-    }
-
-    override fun deleteTrainAndRouteById(id: Int) {
-        TODO("Not yet implemented")
     }
 
 

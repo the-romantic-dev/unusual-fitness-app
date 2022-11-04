@@ -1,6 +1,6 @@
 package org.theromanticdev.unusualfitnessapp.domain.util
 
-class RouteSize(
+class RouteSizeHandler(
     private var north: Double? = null,
     private var south: Double? = null,
     private var east: Double? = null,

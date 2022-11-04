@@ -64,8 +64,8 @@ class WorkoutService() : Service() {
     private fun sendLocation(location: Location) {
         val locationIntent = Intent(IntentStrings.USER_LOCATION_UPDATES_ACTION)
         locationIntent.apply {
-            putExtra("latitude", location.latitude)
-            putExtra("longitude", location.longitude)
+            putExtra(IntentStrings.LATITUDE_EXTRA, location.latitude)
+            putExtra(IntentStrings.LONGITUDE_EXTRA, location.longitude)
 /*            putExtra(IntentStrings.LATITUDE_EXTRA, testList[i].latitude)
             putExtra(IntentStrings.LONGITUDE_EXTRA, testList[i].longitude)
             i++

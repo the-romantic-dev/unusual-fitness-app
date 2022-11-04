@@ -9,6 +9,6 @@ interface DatabaseRepository {
 
     fun getTrainInfoById(id: Int): TrainInfo
 
-    fun deleteTrainAndRouteById(id: Int)
+    fun deleteTrainInfoById(id: Int)
 
 }

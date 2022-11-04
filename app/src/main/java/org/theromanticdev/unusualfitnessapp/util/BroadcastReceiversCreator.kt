@@ -1,4 +1,4 @@
-package org.theromanticdev.unusualfitnessapp.broadcastreceivers
+package org.theromanticdev.unusualfitnessapp.util
 
 import android.content.BroadcastReceiver
 import android.content.Context

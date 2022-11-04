@@ -1,7 +1,6 @@
 package org.theromanticdev.unusualfitnessapp.presentation.view.fragments
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.*
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import org.theromanticdev.unusualfitnessapp.R
 import org.theromanticdev.unusualfitnessapp.appComponent
-import org.theromanticdev.unusualfitnessapp.broadcastreceivers.BroadcastReceiversCreator
+import org.theromanticdev.unusualfitnessapp.util.BroadcastReceiversCreator
 import org.theromanticdev.unusualfitnessapp.dagger.trainFragment.WorkoutFragmentComponent
 import org.theromanticdev.unusualfitnessapp.databinding.FragmentWorkoutBinding
 import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewModel
