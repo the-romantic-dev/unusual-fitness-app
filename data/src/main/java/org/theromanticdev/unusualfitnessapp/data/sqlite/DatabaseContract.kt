@@ -16,5 +16,6 @@ object DatabaseContract {
         const val COLUMN_FINISH_TIME = "finish_time"
         const val COLUMN_DISTANCE = "distance"
         const val COLUMN_DURATION = "duration"
+        const val COLUMN_SNAPSHOT = "snapshot"
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import org.theromanticdev.unusualfitnessapp.domain.util.RouteSizeHandler
 import org.theromanticdev.unusualfitnessapp.domain.util.MapCalculator
+import org.theromanticdev.unusualfitnessapp.util.WorkoutInfoFormatter
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.round
@@ -15,21 +16,14 @@ class WorkoutResult {
     val route: List<LatLng> get() = _routePoints
 
     private var _timer = MutableLiveData(0)
-    val time: LiveData<Int> get() = _timer
-    val formattedTime: String
-        get() = run {
-            val time = time.value!!
-            val hours = if (time / 3600 > 9) time / 3600 else "0${time / 3600}"
-            val minutes = if (time / 60 % 60 > 9) time / 60 % 60 else "0${time / 60 % 60}"
-            val seconds = if (time % 60 > 9) time % 60 else "0${time % 60}"
-            "$hours:$minutes:$seconds"
-        }
+    val timer: LiveData<Int> get() = _timer
+    val formattedTime: String get() = WorkoutInfoFormatter.formatDuration(timer.value!!)
 
     private var routeLengthDegrees = 0.0
     val routeLengthMeters: Int
         get() = MapCalculator.degreesToMeters(routeLengthDegrees)
-    val routeLengthKilometers: Double
-        get() = round(routeLengthMeters / 100.0) / 10.0
+/*    val routeLengthKilometers: Double
+        get() = round(routeLengthMeters / 100.0) / 10.0*/
 
     val geometricCenterPoint: LatLng
         get() = LatLng(routeSizeHandler.centerVertical, routeSizeHandler.centerHorizontal)
@@ -50,6 +44,7 @@ class WorkoutResult {
     private var longitudesSum = 0.0
 
     fun addPointToRoute(point: LatLng) {
+        _routePoints.add(point)
         latitudesSum += point.latitude
         longitudesSum += point.longitude
         if (route.size > 1) routeLengthDegrees += distanceBetweenPoints(point, _routePoints.last())
@@ -57,7 +52,6 @@ class WorkoutResult {
             point.latitude,
             point.longitude
         )
-        _routePoints.add(point)
     }
 
     fun increaseTimerByOneSecond() {
@@ -69,4 +63,8 @@ class WorkoutResult {
         val height = abs(p1.latitude - p2.latitude)
         return sqrt(width.pow(2) + height.pow(2))
     }
+
+/*    fun getInfo(): WorkoutInfo = WorkoutInfo(
+
+    )*/
 }

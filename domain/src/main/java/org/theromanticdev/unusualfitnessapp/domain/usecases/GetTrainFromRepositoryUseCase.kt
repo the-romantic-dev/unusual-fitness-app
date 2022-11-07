@@ -1,6 +1,5 @@
 package org.theromanticdev.unusualfitnessapp.domain.usecases
 
-import org.theromanticdev.unusualfitnessapp.domain.models.TrainInfo
 import org.theromanticdev.unusualfitnessapp.domain.repository.DatabaseRepository
 
 class GetTrainFromRepositoryUseCase(

@@ -16,7 +16,7 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class DeviceLocationManagerImpl @Inject constructor(
+class DeviceLocationManagerImpl(
     private val locationProvider: FusedLocationProviderClient,
     private val settingsClient: SettingsClient,
     private val context: Context

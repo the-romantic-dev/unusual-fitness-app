@@ -39,7 +39,7 @@ class WorkoutService() : Service() {
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onCreate() {
-        appComponent.injectIntoWorkoutService(this)
+        appComponent.inject(this)
         localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
         LocalBroadcastManager.getInstance(applicationContext).registerReceiver(
             workoutPauseReceiver,

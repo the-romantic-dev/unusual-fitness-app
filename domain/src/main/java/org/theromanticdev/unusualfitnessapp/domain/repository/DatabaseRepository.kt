@@ -1,13 +1,12 @@
 package org.theromanticdev.unusualfitnessapp.domain.repository
 
-import org.theromanticdev.unusualfitnessapp.domain.models.Point
-import org.theromanticdev.unusualfitnessapp.domain.models.TrainInfo
+import org.theromanticdev.unusualfitnessapp.domain.models.WorkoutInfo
 
 interface DatabaseRepository {
 
-    fun addTrainInfo(trainInfo: TrainInfo)
+    fun addTrainInfo(workoutInfo: WorkoutInfo)
 
-    fun getTrainInfoById(id: Int): TrainInfo
+    fun getTrainInfoById(id: Int): WorkoutInfo
 
     fun deleteTrainInfoById(id: Int)
 

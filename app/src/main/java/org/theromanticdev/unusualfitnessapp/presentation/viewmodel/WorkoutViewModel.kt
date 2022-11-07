@@ -38,8 +38,8 @@ class WorkoutViewModel : ViewModel() {
         )
     }
 
-    @Inject
-    lateinit var locationProvider: FusedLocationProviderClient
+/*    @Inject
+    lateinit var locationProvider: FusedLocationProviderClient*/
 
     fun startTimer() {
         isTimerRunning = true

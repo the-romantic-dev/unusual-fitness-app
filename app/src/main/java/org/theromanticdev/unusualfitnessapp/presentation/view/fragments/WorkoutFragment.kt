@@ -17,8 +17,8 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import org.theromanticdev.unusualfitnessapp.R
 import org.theromanticdev.unusualfitnessapp.appComponent
+import org.theromanticdev.unusualfitnessapp.dagger.app.AppComponent
 import org.theromanticdev.unusualfitnessapp.util.BroadcastReceiversCreator
-import org.theromanticdev.unusualfitnessapp.dagger.trainFragment.WorkoutFragmentComponent
 import org.theromanticdev.unusualfitnessapp.databinding.FragmentWorkoutBinding
 import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewModel
 import org.theromanticdev.unusualfitnessapp.screenWidthInDP
@@ -41,7 +41,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var localBroadcastManager: LocalBroadcastManager
     private val viewModel: WorkoutViewModel by activityViewModels()
-    private lateinit var trainFragmentDaggerComponent: WorkoutFragmentComponent
+    private lateinit var trainFragmentDaggerComponent: AppComponent
 
     private val locationSettingsRequest =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
@@ -64,13 +64,9 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        trainFragmentDaggerComponent =
-            this.requireActivity().appComponent.trainComponent()
-                .trainFragment(this)
-                .build()
-
-        trainFragmentDaggerComponent.injectIntoViewModel(viewModel)
-        trainFragmentDaggerComponent.injectIntoFragment(this)
+        trainFragmentDaggerComponent = requireActivity().appComponent
+        trainFragmentDaggerComponent.inject(viewModel)
+        trainFragmentDaggerComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -79,7 +75,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
-        if (viewModel.workoutResult.time.value!! > 0) viewModel.workoutResult = WorkoutResult()
+        if (viewModel.workoutResult.timer.value!! > 0) viewModel.workoutResult = WorkoutResult()
         return binding.root
     }
 
@@ -156,7 +152,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
             }
         }
 
-        viewModel.workoutResult.time.observe(viewLifecycleOwner) {
+        viewModel.workoutResult.timer.observe(viewLifecycleOwner) {
             binding.trainDuration.text = viewModel.workoutResult.formattedTime
         }
 

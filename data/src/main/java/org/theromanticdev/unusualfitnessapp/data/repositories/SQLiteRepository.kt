@@ -7,7 +7,7 @@ import org.theromanticdev.unusualfitnessapp.data.sqlite.DatabaseContract.PointsT
 import org.theromanticdev.unusualfitnessapp.data.sqlite.DatabaseContract.WorkoutsTable
 import org.theromanticdev.unusualfitnessapp.data.sqlite.DatabaseHelper
 import org.theromanticdev.unusualfitnessapp.domain.models.Point
-import org.theromanticdev.unusualfitnessapp.domain.models.TrainInfo
+import org.theromanticdev.unusualfitnessapp.domain.models.WorkoutInfo
 import org.theromanticdev.unusualfitnessapp.domain.repository.DatabaseRepository
 
 class SQLiteRepository(private val applicationContext: Context) : DatabaseRepository {
@@ -16,25 +16,27 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
         DatabaseHelper(applicationContext).writableDatabase
     }
 
-    override fun addTrainInfo(trainInfo: TrainInfo) {
-        val contextValues = ContentValues().apply {
-            put(WorkoutsTable.COLUMN_TYPE, trainInfo.type)
-            put(WorkoutsTable.COLUMN_START_TIME, trainInfo.startTime)
-            put(WorkoutsTable.COLUMN_FINISH_TIME, trainInfo.finishTime)
-            put(WorkoutsTable.COLUMN_DISTANCE, trainInfo.distance)
+    override fun addTrainInfo(workoutInfo: WorkoutInfo) {
+        val contentValues = ContentValues().apply {
+            put(WorkoutsTable.COLUMN_TYPE, workoutInfo.type)
+            put(WorkoutsTable.COLUMN_START_TIME, workoutInfo.startTime)
+            put(WorkoutsTable.COLUMN_FINISH_TIME, workoutInfo.finishTime)
+            put(WorkoutsTable.COLUMN_DISTANCE, workoutInfo.distance)
+            put(WorkoutsTable.COLUMN_DURATION, workoutInfo.duration)
+            put(WorkoutsTable.COLUMN_SNAPSHOT, workoutInfo.snapshot)
         }
 
         database.insertOrThrow(
             WorkoutsTable.TABLE_NAME,
             null,
-            contextValues
+            contentValues
         )
 
         val id = getLastIdFromWorkouts()
-        addTrainRoute(trainInfo.route, id)
+        addTrainRoute(workoutInfo.route, id)
     }
 
-    override fun getTrainInfoById(id: Int): TrainInfo {
+    override fun getTrainInfoById(id: Int): WorkoutInfo {
         val cursor = database.query(
             WorkoutsTable.TABLE_NAME,
             arrayOf(
@@ -51,13 +53,14 @@ class SQLiteRepository(private val applicationContext: Context) : DatabaseReposi
         return cursor.use {
             if (cursor.count == 0) throw Exception("DB is empty")
             cursor.moveToFirst()
-            TrainInfo(
+            WorkoutInfo(
                 type = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_TYPE)),
                 startTime = cursor.getLong(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_START_TIME)),
                 finishTime = cursor.getLong(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_FINISH_TIME)),
                 distance = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_DISTANCE)),
                 route = getTrainRouteById(id),
-                duration = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_DISTANCE))
+                duration = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_DISTANCE)),
+                snapshot = cursor.getBlob(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_SNAPSHOT))
             )
         }
     }
