@@ -1,7 +1,0 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-      android:drawable="@drawable/route"
-      android:height="@dimen/text_medium"
-      android:width="@dimen/text_medium"
-      />
-</layer-list>

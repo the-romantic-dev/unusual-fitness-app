@@ -1,33 +1,33 @@
 package org.theromanticdev.unusualfitnessapp.presentation.view.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.SupportMapFragment
 import org.theromanticdev.unusualfitnessapp.R
 import org.theromanticdev.unusualfitnessapp.appComponent
 import org.theromanticdev.unusualfitnessapp.databinding.FragmentWorkoutResultBinding
+import org.theromanticdev.unusualfitnessapp.domain.models.WorkoutInfo
+import org.theromanticdev.unusualfitnessapp.domain.usecases.SaveWorkoutInfoIntoRepositoryUseCase
 import org.theromanticdev.unusualfitnessapp.domain.util.MapCalculator
 import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewModel
-import org.theromanticdev.unusualfitnessapp.screenWidthInDP
-import org.theromanticdev.unusualfitnessapp.util.GoogleMapDrawer
-import org.theromanticdev.unusualfitnessapp.util.WorkoutInfoFormatter
+import org.theromanticdev.unusualfitnessapp.util.*
+import org.theromanticdev.unusualfitnessapp.util.singletones.GoogleMapDrawer
+import org.theromanticdev.unusualfitnessapp.util.singletones.WorkoutInfoFormatter
 import java.text.DateFormat
-import java.util.*
-import kotlin.math.round
+import javax.inject.Inject
 
 class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
+
+    @Inject
+    lateinit var saveWorkoutInfoIntoRepositoryUseCase: SaveWorkoutInfoIntoRepositoryUseCase
 
     private var _binding: FragmentWorkoutResultBinding? = null
     private val binding get() = _binding!!
     private lateinit var resultMapFragment: SupportMapFragment
-    private lateinit var navController: NavController
-    private val viewModel: WorkoutViewModel by activityViewModels()
+    private val workoutViewModel: WorkoutViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,45 +44,72 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
         return binding.root
     }
 
-
-    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        resultMapFragment = childFragmentManager.findFragmentById(R.id.result_map_fragment) as SupportMapFragment
-        showWorkoutRoute()
-        with (viewModel.workoutResult) {
-            binding.resultDistance.resultValue = "${round(routeLengthMeters / 100.0) / 10.0}"
-            binding.resultTime.resultValue = formattedTime
+        resultMapFragment =
+            childFragmentManager.findFragmentById(R.id.result_map_fragment) as SupportMapFragment
 
-            binding.workoutDate.text = WorkoutInfoFormatter.formatDate(startTime ?: 0L, DateFormat.SHORT)
-            val formattedStartTime = WorkoutInfoFormatter.formatTime(startTime ?: 0L, DateFormat.SHORT)
-            val formattedEndTime = WorkoutInfoFormatter.formatTime(endTime ?: 0L, DateFormat.SHORT)
+        showWorkoutRoute()
+        with(workoutViewModel.currentWorkoutInfoHandler) {
+            binding.resultDistance.resultValue = "${routeLengthMeters / 10 / 100.0}"
+            binding.resultTime.resultValue = WorkoutInfoFormatter.formatDuration(timer.value!!)
+
+            binding.workoutDate.text = WorkoutInfoFormatter.formatDate(startTime, DateFormat.SHORT)
+            val formattedStartTime = WorkoutInfoFormatter.formatTime(startTime, DateFormat.SHORT)
+            val formattedEndTime = WorkoutInfoFormatter.formatTime(endTime, DateFormat.SHORT)
 
             binding.workoutStartEndTime.text = "$formattedStartTime - $formattedEndTime"
-            navController = findNavController()
 
-            /*resultMapFragment.getMapAsync { map ->
-                map.setOnMapLoadedCallback {
-                    map.snapshot { bitmap ->
-                        binding.rararara.setImageBitmap(bitmap!!)
+
+
+            binding.saveButton.setOnClickListener {
+                with(workoutViewModel.currentWorkoutInfoHandler) {
+
+                    resultMapFragment.getMapAsync { map ->
+                        map.setOnMapLoadedCallback {
+                            map.snapshot { bitmap ->
+                                saveWorkoutInfoIntoRepositoryUseCase.execute(
+                                    WorkoutInfo(
+                                        type = type,
+                                        startTime = startTime,
+                                        finishTime = endTime,
+                                        distance = routeLengthMeters,
+                                        route = DatabaseInfoConverter.routeListToString(route),
+                                        duration = timer.value!!,
+                                        snapshot = DatabaseInfoConverter.snapshotBitmapToByteArray(bitmap!!),
+                                        centerPoint = DatabaseInfoConverter.centerLatLngToString(
+                                            workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint
+                                        ),
+                                        zoom = MapCalculator.minZoomForSquareMap(
+                                            metersHeight = workoutViewModel.currentWorkoutInfoHandler.routeHeightMeters,
+                                            metersWidth = workoutViewModel.currentWorkoutInfoHandler.routeWidthMeters,
+                                            sideInPixels = requireActivity().screenWidthInDP
+                                        )
+                                    )
+                                )
+                                findNavController().popBackStack()
+                            }
+
+                        }
                     }
                 }
-            }*/
+            }
         }
     }
 
     private fun showWorkoutRoute() {
-        GoogleMapDrawer.drawPolyline(resultMapFragment, viewModel.workoutResult.route)
-        val mapHeight = binding.resultMapFragment.layoutParams.height / requireActivity().resources.displayMetrics.density
-        val minZoom = MapCalculator.minZoomForHeightAndWidth(
-            metersHeight = viewModel.workoutResult.routeHeightMeters,
-            metersWidth = viewModel.workoutResult.routeWidthMeters,
-            pixelsHeight = mapHeight.toInt(),
-            pixelsWidth = requireActivity().screenWidthInDP
+        GoogleMapDrawer.drawPolyline(resultMapFragment, workoutViewModel.currentWorkoutInfoHandler.route)
+
+        val minZoom = MapCalculator.minZoomForSquareMap(
+            metersHeight = workoutViewModel.currentWorkoutInfoHandler.routeHeightMeters,
+            metersWidth = workoutViewModel.currentWorkoutInfoHandler.routeWidthMeters,
+            sideInPixels = requireActivity().screenWidthInDP
         )
 
         GoogleMapDrawer.moveCameraAndZoom(
-            resultMapFragment, viewModel.workoutResult.geometricCenterPoint, minZoom - 0.5f
+            resultMapFragment, workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint, minZoom - 0.5f
         )
     }
+
+
 }

@@ -2,46 +2,63 @@ package org.theromanticdev.unusualfitnessapp.presentation.view.fragments
 
 import android.Manifest
 import android.content.*
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import org.theromanticdev.unusualfitnessapp.R
 import org.theromanticdev.unusualfitnessapp.appComponent
 import org.theromanticdev.unusualfitnessapp.dagger.app.AppComponent
-import org.theromanticdev.unusualfitnessapp.util.BroadcastReceiversCreator
 import org.theromanticdev.unusualfitnessapp.databinding.FragmentWorkoutBinding
+import org.theromanticdev.unusualfitnessapp.domain.util.MapCalculator
+import org.theromanticdev.unusualfitnessapp.presentation.view.fragments.dialog.WorkoutTypeSelectionDialogFragment
 import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewModel
-import org.theromanticdev.unusualfitnessapp.screenWidthInDP
 import org.theromanticdev.unusualfitnessapp.services.WorkoutService
-import org.theromanticdev.unusualfitnessapp.util.GoogleMapDrawer
-import org.theromanticdev.unusualfitnessapp.util.IntentStrings
+import org.theromanticdev.unusualfitnessapp.util.*
 import org.theromanticdev.unusualfitnessapp.util.location.DeviceLocationManager
-import org.theromanticdev.unusualfitnessapp.util.workout.WorkoutResult
-import org.theromanticdev.unusualfitnessapp.util.workout.WorkoutStates
+import org.theromanticdev.unusualfitnessapp.util.singletones.*
+import org.theromanticdev.unusualfitnessapp.util.workout.CurrentWorkoutInfoHandler
+import org.theromanticdev.unusualfitnessapp.util.workout.WorkoutTypes
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
-class WorkoutFragment : Fragment(R.layout.fragment_workout) {
+class WorkoutFragment : Fragment() {
+
+    private val workoutViewModel: WorkoutViewModel by activityViewModels()
+    /*private val sharedWorkoutInfoViewModel: SharedWorkoutInfoViewModel by activityViewModels()*/
+    lateinit var daggerComponent: AppComponent
+
 
     @Inject
     lateinit var deviceLocationManager: DeviceLocationManager
 
+    private val userMarkerBitmap: Lazy<Bitmap> = lazy {
+        requireActivity().getVectorResourceAsScaledBitmap(
+            R.drawable.map_user_location,
+            96, 96
+        )
+    }
+
     private var _binding: FragmentWorkoutBinding? = null
     private val binding get() = _binding!!
     private lateinit var mapFragment: SupportMapFragment
+
+
     private lateinit var localBroadcastManager: LocalBroadcastManager
-    private val viewModel: WorkoutViewModel by activityViewModels()
-    private lateinit var trainFragmentDaggerComponent: AppComponent
+
+    private val serviceIntent by lazy { Intent(requireActivity(), WorkoutService::class.java) }
 
     private val locationSettingsRequest =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
@@ -63,10 +80,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        trainFragmentDaggerComponent = requireActivity().appComponent
-        trainFragmentDaggerComponent.inject(viewModel)
-        trainFragmentDaggerComponent.inject(this)
+        daggerInject()
     }
 
     override fun onCreateView(
@@ -75,14 +89,14 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
-        if (viewModel.workoutResult.timer.value!! > 0) viewModel.workoutResult = WorkoutResult()
+        if (workoutViewModel.currentWorkoutInfoHandler.timer.value!! > 0) workoutViewModel.currentWorkoutInfoHandler =
+            CurrentWorkoutInfoHandler()
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("the_romantic_dev", "Screen width is ${requireActivity().screenWidthInDP} dp")
 
         localBroadcastManager =
             LocalBroadcastManager.getInstance(requireActivity().applicationContext)
@@ -90,12 +104,12 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         binding.startWorkoutButton.setOnClickListener {
             lifecycleScope.launch {
-                if (checkLocationConditions()) viewModel.workoutState.value = WorkoutStates.STARTED
+                if (checkLocationConditions()) workoutViewModel.workoutState.value = WorkoutStates.STARTED
             }
         }
 
         binding.pauseWorkoutButton.setOnClickListener {
-            with (viewModel.workoutState) {
+            with(workoutViewModel.workoutState) {
                 if (value == WorkoutStates.STARTED ||
                     value == WorkoutStates.RESUMED
                 ) {
@@ -107,58 +121,40 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         }
 
         binding.stopWorkoutButton.setOnClickListener {
-            viewModel.workoutState.value = WorkoutStates.STOPPED
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace<WorkoutResultFragment>(R.id.fragment_container_main)
-                addToBackStack(null)
-            }.commit()
+            workoutViewModel.workoutState.value = WorkoutStates.STOPPED
+            /*updateWorkoutInfoForResultFragment()*/
+            val action = WorkoutFragmentDirections.actionWorkoutFragmentToWorkoutResultFragment()
+            findNavController().navigate(action)
         }
-        viewModel.workoutState.observe(viewLifecycleOwner) { state ->
-            val context = requireActivity()
-            val intent = Intent(context, WorkoutService::class.java)
+
+        binding.selectWorkoutTypeFab.setOnClickListener {
+            val dialog = WorkoutTypeSelectionDialogFragment()
+            dialog.itemClickListener = { pos ->
+                binding.selectWorkoutTypeFab.setImageResource(WorkoutTypes.instance.types[pos].imageResource)
+                workoutViewModel.currentWorkoutInfoHandler.type = pos
+                dialog.dismiss()
+            }
+            dialog.show(childFragmentManager, "Type selection dialog")
+        }
+
+        workoutViewModel.workoutState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                WorkoutStates.STARTED -> {
-                    lifecycleScope.launch {
-                        showUserLocation()
-                    }
-                    context.startService(intent)
-                    viewModel.startTimer()
-                    binding.startWorkoutButton.visibility = View.GONE
-                    binding.stopAndPauseButtonsContainer.visibility = View.VISIBLE
-                    viewModel.workoutResult.startTime = System.currentTimeMillis() / 1000
-                }
-                WorkoutStates.PAUSED -> {
-                    viewModel.stopTimer()
-                    binding.pauseWorkoutButton.setImageResource(R.drawable.workout_play_96)
-                    localBroadcastManager.sendBroadcast(Intent(IntentStrings.WORKOUT_PAUSED_ACTION))
-                    Log.e("the_romantic_dev", "Pause broadcast sent")
-                }
-                WorkoutStates.STOPPED -> {
-                    context.stopService(intent)
-                    viewModel.stopTimer()
-                    viewModel.workoutResult.endTime = System.currentTimeMillis() / 1000
-                }
-
-                WorkoutStates.RESUMED -> {
-                    binding.pauseWorkoutButton.setImageResource(R.drawable.workout_pause_96)
-                    viewModel.startTimer()
-                    localBroadcastManager.sendBroadcast(Intent(IntentStrings.WORKOUT_RESUMED_ACTION))
-                    Log.e("the_romantic_dev", "ResumeFInt broadcast sent")
-                }
-
-                else -> {
-                    throw NullPointerException("Workout state is null")
-                }
+                WorkoutStates.STARTED -> startWorkout()
+                WorkoutStates.PAUSED -> pauseWorkout()
+                WorkoutStates.STOPPED -> stopWorkout()
+                WorkoutStates.RESUMED -> resumeWorkout()
+                else -> requireActivity().toast("WORKOUT STATE ERROR")
             }
         }
 
-        viewModel.workoutResult.timer.observe(viewLifecycleOwner) {
-            binding.trainDuration.text = viewModel.workoutResult.formattedTime
+        workoutViewModel.currentWorkoutInfoHandler.timer.observe(viewLifecycleOwner) {
+            val formattedTime =
+                WorkoutInfoFormatter.formatDuration(workoutViewModel.currentWorkoutInfoHandler.timer.value!!)
+            binding.trainDuration.text = formattedTime
         }
 
         registerServiceUpdatesReceiver()
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -172,13 +168,22 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         _binding = null
     }
 
+
+    private fun daggerInject() {
+        daggerComponent = requireActivity().appComponent
+        daggerComponent.inject(workoutViewModel)
+        daggerComponent.inject(this)
+    }
+
+
     private suspend fun showUserLocation() {
         val location = deviceLocationManager.getSingleLocation()
-        if (location == null) toast("Can't get user location")
+        if (location == null) requireContext().toast("Can't get user location")
         else {
+
             with(GoogleMapDrawer) {
                 drawMarker(
-                    viewModel.userLocationBitmap,
+                    userMarkerBitmap.value,
                     mapFragment = mapFragment,
                     location = location
                 )
@@ -189,7 +194,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
                     binding.progressCircular.visibility = View.GONE
                     binding.mapFogging.visibility = View.GONE
                 } else {
-                    toast("Layout is not available")
+                    requireContext().toast("Layout is not available")
                 }
 
             }
@@ -221,7 +226,7 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
 
     private fun registerServiceUpdatesReceiver() {
         LocalBroadcastManager.getInstance(requireActivity().applicationContext).registerReceiver(
-            BroadcastReceiversCreator.create { _, intent -> locationUpdatesCallback(intent)},
+            BroadcastReceiversCreator.create { _, intent -> locationUpdatesCallback(intent) },
             IntentFilter(IntentStrings.USER_LOCATION_UPDATES_ACTION)
         )
     }
@@ -231,15 +236,67 @@ class WorkoutFragment : Fragment(R.layout.fragment_workout) {
         val longitude = intent.extras!!.get(IntentStrings.LONGITUDE_EXTRA) as Double
 
         val lastLocation = LatLng(latitude, longitude)
-        viewModel.workoutResult.addPointToRoute(lastLocation)
+        workoutViewModel.currentWorkoutInfoHandler.addPointToRoute(lastLocation)
         with(GoogleMapDrawer) {
-            drawPolyline(mapFragment, viewModel.workoutResult.route)
-            drawMarker(viewModel.userLocationBitmap, mapFragment, lastLocation)
+            drawPolyline(mapFragment, workoutViewModel.currentWorkoutInfoHandler.route)
+            drawMarker(userMarkerBitmap.value, mapFragment, lastLocation)
             moveCamera(mapFragment, lastLocation)
         }
     }
 
-    private fun toast(text: String) {
-        Toast.makeText(requireActivity(), text, Toast.LENGTH_LONG).show()
+    suspend fun makeSnapshot(mapFragment: SupportMapFragment): Bitmap {
+        val zoom = calculateZoom()
+        val location = workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint
+
+        return suspendCoroutine { continuation ->
+            mapFragment.getMapAsync { map ->
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoom))
+                map.setOnMapLoadedCallback {
+                    map.snapshot { bitmap -> continuation.resume(bitmap!!) }
+                }
+            }
+        }
     }
+
+    private fun calculateZoom(): Float {
+        with (workoutViewModel.currentWorkoutInfoHandler) {
+            return MapCalculator.minZoomForSquareMap(
+                routeHeightMeters,
+                routeWidthMeters,
+                requireActivity().screenWidthInDP
+            )
+        }
+    }
+
+    private fun startWorkout() {
+        lifecycleScope.launch {
+            showUserLocation()
+        }
+        requireActivity().startService(serviceIntent)
+        workoutViewModel.startTimer()
+        binding.startWorkoutButton.visibility = View.GONE
+        binding.stopAndPauseButtonsContainer.visibility = View.VISIBLE
+        workoutViewModel.currentWorkoutInfoHandler.startTime =
+            System.currentTimeMillis() / 1000
+    }
+
+    private fun pauseWorkout() {
+        workoutViewModel.stopTimer()
+        binding.pauseWorkoutButton.setImageResource(R.drawable.workout_play)
+        localBroadcastManager.sendBroadcast(Intent(IntentStrings.WORKOUT_PAUSED_ACTION))
+    }
+
+    private fun stopWorkout() {
+        requireActivity().stopService(serviceIntent)
+        workoutViewModel.stopTimer()
+        workoutViewModel.currentWorkoutInfoHandler.endTime = System.currentTimeMillis() / 1000
+    }
+
+    private fun resumeWorkout() {
+        binding.pauseWorkoutButton.setImageResource(R.drawable.workout_pause)
+        workoutViewModel.startTimer()
+        localBroadcastManager.sendBroadcast(Intent(IntentStrings.WORKOUT_RESUMED_ACTION))
+    }
+
+
 }

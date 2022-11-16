@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_workout" >
         <action
             android:id="@+id/action_workoutFragment_to_workoutResultFragment"
-            app:destination="@id/workoutResultFragment" />
+            app:destination="@id/workoutResultFragment"
+            />
         <action
             android:id="@+id/action_workoutFragment_to_workoutsListFragment"
             app:destination="@id/workoutsListFragment" />
@@ -24,15 +25,29 @@
         android:id="@+id/workoutResultFragment"
         android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutResultFragment"
         android:label="WorkoutResultFragment"
-        tools:layout="@layout/fragment_workout_result"/>
+        tools:layout="@layout/fragment_workout_result">
+        <argument
+            android:name="isInfoNew"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
     <fragment
         android:id="@+id/workoutsListFragment"
         android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutsListFragment"
         android:label="WorkoutsListFragment"
-        tools:layout="@layout/fragment_workouts_list"/>
+        tools:layout="@layout/fragment_workouts_list">
+        <action
+            android:id="@+id/action_workoutsListFragment_to_showWorkoutResultFragment"
+            app:destination="@id/showWorkoutResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.UserInfoFragment"
         android:label="UserInfoFragment"
         tools:layout="@layout/fragment_user_info"/>
+    <fragment
+        android:id="@+id/showWorkoutResultFragment"
+        android:name="org.theromanticdev.unusualfitnessapp.presentation.view.fragments.ShowWorkoutResultFragment"
+        android:label="ShowWorkoutResultFragment"
+        tools:layout="@layout/fragment_workout_result"/>
 </navigation>

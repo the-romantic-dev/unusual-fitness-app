@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+import java.sql.SQLException
+
 class DatabaseHelper(private val applicationContext: Context) :
     SQLiteOpenHelper(applicationContext, "database.db", null, 1) {
 
@@ -11,8 +13,13 @@ class DatabaseHelper(private val applicationContext: Context) :
         val sql = applicationContext.assets.open("db_init.sql").bufferedReader().use {
             it.readText()
         }
-        sql.split(';').filter {it.isNotBlank()}.forEach {
-            database.execSQL(it)
+
+        sql.split(';').filter { it.isNotBlank() }.forEach {
+            try {
+                database.execSQL(it)
+            } catch (e: SQLException) {
+                println(e.errorCode)
+            }
         }
     }
 

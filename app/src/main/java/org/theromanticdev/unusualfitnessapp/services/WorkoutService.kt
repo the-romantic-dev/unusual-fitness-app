@@ -11,7 +11,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.maps.model.LatLng
 import org.theromanticdev.unusualfitnessapp.appComponent
-import org.theromanticdev.unusualfitnessapp.util.IntentStrings
+import org.theromanticdev.unusualfitnessapp.util.singletones.IntentStrings
 import org.theromanticdev.unusualfitnessapp.util.location.DeviceLocationManager
 import javax.inject.Inject
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,13 +11,21 @@
         android:id="@+id/result_map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_700"
-        android:paddingVertical="8dp">
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/result_map_fragment">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_workout_type"
@@ -50,29 +58,50 @@
             android:text="00:00 - 23:59"
             android:textColor="@color/white"
             android:textSize="@dimen/text_default"
-            app:drawableStartCompat="@drawable/result_time"
+            app:drawableStartCompat="@drawable/result_summary_time"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/workout_results"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         android:padding="8dp"
-        android:orientation="vertical">
+        app:layout_constraintBottom_toTopOf="@id/save_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <org.theromanticdev.unusualfitnessapp.presentation.view.custom.WorkoutResultsLine
             android:id="@+id/result_distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconSrc="@drawable/result_distance"
+            app:textAndImageSize="@dimen/result_description_text_and_image_size"
+            app:iconSrc="@drawable/result_description_icon_distance"
             app:resultLabel="Расстояние"
-            app:resultUnits="км"/>
+            app:resultUnits="км" />
 
         <org.theromanticdev.unusualfitnessapp.presentation.view.custom.WorkoutResultsLine
             android:id="@+id/result_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:resultLabel="Время"/>
+
+            app:iconSrc="@drawable/result_descritpion_icon_time"
+            app:textAndImageSize="@dimen/result_description_text_and_image_size"
+            app:resultLabel="Время" />
     </LinearLayout>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Save Workout"
+
+        android:textSize="24sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workout_results" />
+</androidx.constraintlayout.widget.ConstraintLayout>

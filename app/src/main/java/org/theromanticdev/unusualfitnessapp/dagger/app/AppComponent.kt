@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutFragment
 import org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutResultFragment
+import org.theromanticdev.unusualfitnessapp.presentation.view.fragments.WorkoutsListFragment
 import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewModel
 import org.theromanticdev.unusualfitnessapp.services.WorkoutService
 import javax.inject.Singleton
@@ -13,13 +14,15 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    fun inject(workoutFragment: WorkoutFragment)
+    fun inject(fragment: WorkoutFragment)
 
-    fun inject(workoutViewModel: WorkoutViewModel)
+    fun inject(viewModel: WorkoutViewModel)
 
     fun inject(service: WorkoutService)
 
     fun inject(fragment: WorkoutResultFragment)
+
+    fun inject(fragment: WorkoutsListFragment)
 
     fun context(): Context
 

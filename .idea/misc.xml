@@ -25,25 +25,39 @@
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_arrow_right.xml" value="0.121" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_distance.xml" value="0.1215" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.17" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_list.xml" value="0.121" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_time.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_user_info.xml" value="0.121" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/ic_user_location_96_white.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/map_marker_user_location.xml" value="0.121" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/map_user_location.xml" value="0.121" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/result_description_icon_distance.xml" value="0.121" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/result_distance.xml" value="0.176" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/result_time.xml" value="0.121" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/selector_bottom_nav_view.xml" value="0.1095" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/time_96.xml" value="0.1215" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/toolbar_action_bug_report.xml" value="0.17" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/user_location.xml" value="0.121" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/workout_pause_96.xml" value="0.1215" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/workout_play_96.xml" value="0.17" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/workout_stop_96.xml" value="0.17" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/drawable/workouts_list_item_arrow_right.xml" value="0.17" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout-v28/view_workouts_list_item.xml" value="0.10885416666666667" />
-        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/activity_main.xml" value="0.152" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/dialog_workout_type_selection.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_user_info.xml" value="0.2" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workout.xml" value="0.20521590423257802" />
-        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workout_result.xml" value="0.12" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workout_result.xml" value="0.176" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/fragment_workouts_list.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/item_workout_types_selection_list.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/item_workouts_list.xml" value="0.264" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workout_result_description.xml" value="0.2" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workout_results_line.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workout_results_lint.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/layout/view_workouts_list_item.xml" value="0.264" />
-        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/menu/toolbar_menu.xml" value="0.14365113296280463" />
+        <entry key="..\:/Users/Public/UnusualFitnessApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.17" />
       </map>
     </option>
   </component>

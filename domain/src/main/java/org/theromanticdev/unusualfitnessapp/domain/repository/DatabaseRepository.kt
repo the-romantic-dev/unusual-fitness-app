@@ -1,13 +1,16 @@
 package org.theromanticdev.unusualfitnessapp.domain.repository
 
 import org.theromanticdev.unusualfitnessapp.domain.models.WorkoutInfo
+import java.util.*
 
 interface DatabaseRepository {
 
-    fun addTrainInfo(workoutInfo: WorkoutInfo)
+    fun getAllWorkoutInfo(): Map<Int, WorkoutInfo>
 
-    fun getTrainInfoById(id: Int): WorkoutInfo
+    fun addWorkoutInfo(workoutInfo: WorkoutInfo)
 
-    fun deleteTrainInfoById(id: Int)
+    fun getWorkoutInfoById(id: Int): WorkoutInfo?
+
+    fun deleteWorkoutInfoById(id: Int)
 
 }

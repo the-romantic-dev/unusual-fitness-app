@@ -10,6 +10,7 @@ android {
     compileSdk 32
     lintOptions {
         disable 'MissingPermission'
+        disable 'SetTextI18n'
     }
 
     defaultConfig {

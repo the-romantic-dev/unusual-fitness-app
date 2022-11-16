@@ -22,8 +22,19 @@
             android:id="@+id/train_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_200"
+            android:background="?attr/colorPrimary"
             android:paddingBottom="16dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/select_workout_type_fab"
+
+                app:fabSize="mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/type_icon_walking"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/duration_label"
@@ -85,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/workout_play_96"
+        android:src="@drawable/workout_play"
         android:backgroundTint="@color/workout_start_button"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,7 +127,7 @@
 
             android:backgroundTint="@color/workout_pause_button"
 
-            android:src="@drawable/workout_pause_96"
+            android:src="@drawable/workout_pause"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -129,7 +140,7 @@
 
             android:backgroundTint="@color/workout_stop_button"
 
-            android:src="@drawable/workout_stop_96"
+            android:src="@drawable/workout_stop"
             tools:ignore="ContentDescription" />
 
 

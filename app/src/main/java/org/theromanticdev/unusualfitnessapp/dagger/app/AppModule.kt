@@ -6,6 +6,9 @@ import dagger.Module
 import dagger.Provides
 import org.theromanticdev.unusualfitnessapp.data.repositories.SQLiteRepository
 import org.theromanticdev.unusualfitnessapp.domain.repository.DatabaseRepository
+import org.theromanticdev.unusualfitnessapp.domain.usecases.DeleteWorkoutInfoFromRepositoryUseCase
+import org.theromanticdev.unusualfitnessapp.domain.usecases.GetAllWorkoutInfoFromRepositoryUseCase
+import org.theromanticdev.unusualfitnessapp.domain.usecases.SaveWorkoutInfoIntoRepositoryUseCase
 import javax.inject.Singleton
 
 @Module
@@ -18,5 +21,16 @@ class AppModule {
     @Singleton
     fun provideDatabaseRepository(context: Context): DatabaseRepository = SQLiteRepository(context)
 
+    @Provides
+    fun provideGetWorkoutInfoListFromRepositoryUseCase(repository: DatabaseRepository) =
+        GetAllWorkoutInfoFromRepositoryUseCase(repository)
+
+    @Provides
+    fun provideSaveWorkoutInfoIntoRepositoryUseCase(repository: DatabaseRepository) =
+        SaveWorkoutInfoIntoRepositoryUseCase(repository)
+
+    @Provides
+    fun provideDeleteWorkoutInfoFromRepositoryUseCase(repository: DatabaseRepository) =
+        DeleteWorkoutInfoFromRepositoryUseCase(repository)
 
 }

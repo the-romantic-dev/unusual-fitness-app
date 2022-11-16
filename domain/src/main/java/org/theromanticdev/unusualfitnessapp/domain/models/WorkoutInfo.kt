@@ -5,10 +5,14 @@ data class WorkoutInfo(
     val startTime: Long,
     val finishTime: Long,
     val distance: Int,
-    val route: List<Point>,
+    val route: String,
     val duration: Int,
-    val snapshot: ByteArray
+    val centerPoint: String,
+    val snapshot: ByteArray,
+    val zoom: Float,
+
 ) {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

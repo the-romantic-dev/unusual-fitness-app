@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="16dp"
         android:id="@+id/workouts_list"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

@@ -23,6 +23,9 @@ object MapCalculator {
         return metersAndPixelsToZoom(meters, pixels)
     }
 
+    fun minZoomForSquareMap(metersHeight: Int, metersWidth: Int, sideInPixels: Int) =
+        minZoomForHeightAndWidth(metersHeight, metersWidth, sideInPixels, sideInPixels)
+
     private fun metersAndPixelsToZoom(meters: Int, pixels: Int): Float {
         val metersInPixel = meters.toDouble() / pixels
         val mercatorTalesOnScreen = EARTH_EQUATOR.toDouble() /

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/primary_light"
+    app:cardCornerRadius="28dp"
+    android:layout_marginBottom="8dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingVertical="8dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="0dp"/>
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_gray_circle">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+
+                    android:id="@+id/image_workout_type"
+                    android:src="@drawable/type_icon_walking"
+                    android:layout_gravity="center"
+                    android:contentDescription="workout type" />
+            </FrameLayout>
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="0dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_gravity="center_vertical">
+                <TextView
+                    android:id="@+id/workout_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="11.07.2002"
+                    android:textSize="@dimen/text_default"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/workout_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100 km"
+                    android:textSize="@dimen/text_medium"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/workout_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_default"
+                    android:text="23:59:59"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp">
+            <ImageView
+                android:id="@+id/route_snapshot"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+
+                android:background="@color/purple_700"/>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/workouts_list_item_arrow_right"
+
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>

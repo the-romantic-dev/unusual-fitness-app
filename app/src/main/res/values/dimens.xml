@@ -3,7 +3,9 @@
 
     <dimen name="text_default">20sp</dimen>
     <dimen name="text_medium">24sp</dimen>
-    <dimen name="image_text_default">20dp</dimen>
+
+    //Workout Result Fragment
+    <dimen name="result_description_text_and_image_size">24sp</dimen>
 
     <dimen name="result_workout_map_height">400dp</dimen>
 

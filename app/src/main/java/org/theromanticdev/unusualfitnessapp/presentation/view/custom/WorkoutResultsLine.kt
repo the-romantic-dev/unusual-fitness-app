@@ -1,14 +1,20 @@
 package org.theromanticdev.unusualfitnessapp.presentation.view.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import org.theromanticdev.unusualfitnessapp.R
 import org.theromanticdev.unusualfitnessapp.databinding.ViewWorkoutResultsLineBinding
+import org.theromanticdev.unusualfitnessapp.util.getVectorResourceAsScaledBitmap
+
 
 class WorkoutResultsLine(
     context: Context,
@@ -17,6 +23,8 @@ class WorkoutResultsLine(
     defStyleRes: Int
 ) :
     FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+
+    private lateinit var attrsArray: TypedArray
 
     private val binding: ViewWorkoutResultsLineBinding
 
@@ -33,14 +41,23 @@ class WorkoutResultsLine(
         val inflater = LayoutInflater.from(context)
         inflater.inflate(R.layout.view_workout_results_line, this, true)
         binding = ViewWorkoutResultsLineBinding.bind(this)
-        initAttributes(attrs, defStyleAttr, defStyleRes)
+        if (attrs != null) {
+            attrsArray = context.obtainStyledAttributes(
+                attrs,
+                R.styleable.WorkoutResultsLine,
+                defStyleAttr,
+                defStyleRes
+            )
+            initAttributes()
+            attrsArray.recycle()
+        }
+
     }
 
     var resultValue
         get() = run {
             binding.resultValue.text.split(" ")[0]
         }
-        @SuppressLint("SetTextI18n")
         set(value) {
             binding.resultValue.text = "$value $resultUnits"
         }
@@ -52,39 +69,42 @@ class WorkoutResultsLine(
             else ""
         }
 
-    @SuppressLint("SetTextI18n")
-    private fun initAttributes(
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) {
-        if (attrs == null) return
-        val typedArray = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.WorkoutResultsLine,
-            defStyleAttr,
-            defStyleRes
+    private fun initAttributes() {
+        initResultValueAndUnits()
+        initResultLabel()
+        initIcon()
+    }
+
+    private fun initIcon() {
+        val srcId = attrsArray.getResourceId(
+            R.styleable.WorkoutResultsLine_iconSrc,
+            R.mipmap.ic_launcher
         )
 
-        with(binding) {
-            val resultValueText =
-                typedArray.getString(R.styleable.WorkoutResultsLine_resultValue)
-            val resultUnitsText =
-                typedArray.getString(R.styleable.WorkoutResultsLine_resultUnits)
-            resultValue.text = "${resultValueText ?: "NaN"} ${resultUnitsText ?: ""}"
+        val sizeId = attrsArray.getResourceId(
+            R.styleable.WorkoutResultsLine_textAndImageSize,
+            R.dimen.result_description_text_and_image_size
+        )
 
-            val resultLabelText =
-                typedArray.getString(R.styleable.WorkoutResultsLine_resultLabel)
-            resultLabel.text = "${resultLabelText ?: "?"}:"
+        val size = resources.getDimensionPixelSize(sizeId)
 
+        binding.resultLabel.setCompoundDrawablesWithIntrinsicBounds(
+            context.getVectorResourceAsScaledBitmap(srcId, size, size).toDrawable(resources),
+            null,
+            null,
+            null
+        )
+    }
 
-            val resultIconSrc = typedArray.getResourceId(
-                R.styleable.WorkoutResultsLine_iconSrc,
-                R.drawable.default_text_drawable
-            )
-            resultLabel.setCompoundDrawablesWithIntrinsicBounds(resultIconSrc, 0, 0, 0)
-        }
+    private fun initResultValueAndUnits() {
+        val resultValueText = attrsArray.getString(R.styleable.WorkoutResultsLine_resultValue)
+        val resultUnitsText = attrsArray.getString(R.styleable.WorkoutResultsLine_resultUnits)
+        binding.resultValue.text = "${resultValueText ?: "NaN"} ${resultUnitsText ?: ""}"
+    }
 
-        typedArray.recycle()
+    private fun initResultLabel() {
+        val resultLabelText =
+            attrsArray.getString(R.styleable.WorkoutResultsLine_resultLabel)
+        binding.resultLabel.text = "${resultLabelText ?: "?"}:"
     }
 }
