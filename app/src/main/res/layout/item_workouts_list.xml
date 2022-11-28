@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/primary_light"
+    android:backgroundTint="?attr/colorPrimary"
     app:cardCornerRadius="28dp"
     android:layout_marginBottom="8dp">
 
@@ -25,15 +25,15 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/shape_gray_circle">
+                android:background="@drawable/shape_circle">
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    app:tint="?attr/colorOnPrimary"
 
                     android:id="@+id/image_workout_type"
                     android:src="@drawable/type_icon_walking"
-                    android:layout_gravity="center"
-                    android:contentDescription="workout type" />
+                    android:layout_gravity="center" />
             </FrameLayout>
             <Space
                 android:layout_width="24dp"
@@ -51,7 +51,7 @@
 
                     android:text="11.07.2002"
                     android:textSize="@dimen/text_default"
-                    android:textColor="@color/primary_text"
+                    android:textColor="?attr/colorOnPrimary"
                     tools:ignore="HardcodedText" />
                 <TextView
                     android:id="@+id/workout_distance"
@@ -60,7 +60,7 @@
                     android:text="100 km"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_text"
+                    android:textColor="?attr/colorOnPrimary"
                     tools:ignore="HardcodedText" />
                 <TextView
                     android:id="@+id/workout_duration"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_default"
                     android:text="23:59:59"
-                    android:textColor="@color/primary_text"
+                    android:textColor="?attr/colorOnPrimary"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/workouts_list_item_arrow_right"
 
+                app:tint="?attr/colorOnPrimary"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 

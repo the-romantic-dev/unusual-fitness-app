@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="?attr/backgroundColor">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/result_map_fragment"
@@ -21,19 +22,39 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_700"
+        android:background="?attr/colorPrimaryDark"
         android:paddingVertical="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result_map_fragment">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_workout_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#DCDCDC"
+            android:backgroundTint="@color/primary_light"
             android:contentDescription="@string/result_fragment_workout_result_content_description"
-            app:fabSize="mini" />
+            app:fabSize="mini" />-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/shape_circle"/>
+            <ImageView
+                android:id="@+id/result_type_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:tint="?attr/colorOnPrimary"
+                android:src="@drawable/type_icon_walking"/>
+        </FrameLayout>
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
 
         <TextView
             android:id="@+id/workout_date"
@@ -41,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="11.07.2002"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/text_default"
             tools:ignore="HardcodedText" />
 
@@ -56,7 +77,8 @@
             android:layout_gravity="center_vertical"
             android:drawablePadding="4dp"
             android:text="00:00 - 23:59"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
+            app:drawableTint="?attr/colorOnPrimary"
             android:textSize="@dimen/text_default"
             app:drawableStartCompat="@drawable/result_summary_time"
             tools:ignore="HardcodedText" />
@@ -68,7 +90,8 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/save_button"
+
+        app:layout_constraintBottom_toTopOf="@id/button_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -82,6 +105,8 @@
             app:resultLabel="Расстояние"
             app:resultUnits="км" />
 
+
+
         <org.theromanticdev.unusualfitnessapp.presentation.view.custom.WorkoutResultsLine
             android:id="@+id/result_time"
             android:layout_width="match_parent"
@@ -92,16 +117,44 @@
             app:resultLabel="Время" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_marginHorizontal="8dp"
+    <LinearLayout
+        android:id="@+id/button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:text="Save Workout"
-
-        android:textSize="24sp"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/workout_results" />
+        app:layout_constraintTop_toBottomOf="@+id/workout_results">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_button"
+            android:layout_marginHorizontal="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
+            app:strokeColor="?attr/colorOnPrimary"
+            app:strokeWidth="2dp"
+            android:text="@string/cancel_workout_result_button"
+            android:layout_weight="1"
+
+            android:textSize="24sp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_button"
+            android:layout_marginHorizontal="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:textColor="@color/primary_text"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorSecondary"
+
+            android:text="@string/save_workout_result_button"
+
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

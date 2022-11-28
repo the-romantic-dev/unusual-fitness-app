@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:background="#E0E0A0"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimary"
     android:paddingHorizontal="24dp"
     android:paddingVertical="12dp"
     android:layout_marginBottom="2dp">
@@ -13,10 +15,11 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/shape_gray_circle"
-
-            android:layout_gravity="center"/>
+            android:src="@drawable/shape_circle"
+            android:layout_gravity="center"
+            android:contentDescription="@string/type_icon_content_description"/>
         <ImageView
+            app:tint="?attr/colorOnPrimary"
             android:id="@+id/type_icon"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -30,9 +33,10 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Walking"
+        android:text="TypeName"
         android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_gravity="center"/>
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_gravity="center"
+        tools:ignore="HardcodedText" />
 
 </FrameLayout>

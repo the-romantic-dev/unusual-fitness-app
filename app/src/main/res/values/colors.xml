@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="secondary">#FF9800</color>
-    <color name="secondary_dark">#C66900</color>
-    <color name="secondary_light">#FF9800</color>
-
     <color name="primary">#9C27B0</color>
     <color name="primary_dark">#7B1FA2</color>
     <color name="primary_dark_alt">#6a0080</color>
     <color name="primary_light">#E1BEE7</color>
     <color name="primary_light_alt">#d05ce3</color>
+
+    <color name="secondary">#FF9800</color>
+    <color name="secondary_dark">#C66900</color>
+    <color name="secondary_light">#FF9800</color>
+
 
     <color name="primary_text">#212121</color>
     <color name="secondaty_text">#757575</color>

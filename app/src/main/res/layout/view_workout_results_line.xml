@@ -14,10 +14,11 @@
         android:layout_height="wrap_content"
         android:text="Label:"
         android:layout_gravity="start"
-        android:textColor="@color/black"
         android:textSize="@dimen/text_medium"
         tools:ignore="HardcodedText"
-        app:drawableStartCompat="@mipmap/ic_launcher" />
+        android:textColor="?attr/colorOnPrimary"
+        app:drawableTint="?attr/colorOnPrimary"
+        app:drawableStartCompat="@drawable/result_summary_time"/>
 
     <TextView
         android:id="@+id/result_value"
@@ -25,7 +26,7 @@
         android:layout_height="match_parent"
         android:text="0 units"
         android:layout_gravity="end"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/text_medium"
         tools:ignore="HardcodedText" />
 

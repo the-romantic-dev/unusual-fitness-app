@@ -1,5 +1,6 @@
 package org.theromanticdev.unusualfitnessapp.presentation.view.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -16,6 +17,8 @@ import org.theromanticdev.unusualfitnessapp.presentation.viewmodel.WorkoutViewMo
 import org.theromanticdev.unusualfitnessapp.util.*
 import org.theromanticdev.unusualfitnessapp.util.singletones.GoogleMapDrawer
 import org.theromanticdev.unusualfitnessapp.util.singletones.WorkoutInfoFormatter
+import org.theromanticdev.unusualfitnessapp.util.workout.CurrentWorkoutInfoHandler
+import org.theromanticdev.unusualfitnessapp.util.workout.WorkoutTypes
 import java.text.DateFormat
 import javax.inject.Inject
 
@@ -24,6 +27,7 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
     @Inject
     lateinit var saveWorkoutInfoIntoRepositoryUseCase: SaveWorkoutInfoIntoRepositoryUseCase
 
+    private lateinit var snapshot: Bitmap
     private var _binding: FragmentWorkoutResultBinding? = null
     private val binding get() = _binding!!
     private lateinit var resultMapFragment: SupportMapFragment
@@ -46,8 +50,15 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         resultMapFragment =
             childFragmentManager.findFragmentById(R.id.result_map_fragment) as SupportMapFragment
+
+        resultMapFragment.getMapAsync { map ->
+            map.setOnMapLoadedCallback {
+                map.snapshot {snapshot = it!!}
+            }
+        }
 
         showWorkoutRoute()
         with(workoutViewModel.currentWorkoutInfoHandler) {
@@ -59,46 +70,25 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
             val formattedEndTime = WorkoutInfoFormatter.formatTime(endTime, DateFormat.SHORT)
 
             binding.workoutStartEndTime.text = "$formattedStartTime - $formattedEndTime"
-
+            binding.resultTypeIcon.setImageResource(WorkoutTypes().types[type].imageResource)
 
 
             binding.saveButton.setOnClickListener {
-                with(workoutViewModel.currentWorkoutInfoHandler) {
+                saveWorkoutInfoIntoRepositoryUseCase.execute(createWorkoutInfo())
+                returnToWorkout()
+            }
 
-                    resultMapFragment.getMapAsync { map ->
-                        map.setOnMapLoadedCallback {
-                            map.snapshot { bitmap ->
-                                saveWorkoutInfoIntoRepositoryUseCase.execute(
-                                    WorkoutInfo(
-                                        type = type,
-                                        startTime = startTime,
-                                        finishTime = endTime,
-                                        distance = routeLengthMeters,
-                                        route = DatabaseInfoConverter.routeListToString(route),
-                                        duration = timer.value!!,
-                                        snapshot = DatabaseInfoConverter.snapshotBitmapToByteArray(bitmap!!),
-                                        centerPoint = DatabaseInfoConverter.centerLatLngToString(
-                                            workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint
-                                        ),
-                                        zoom = MapCalculator.minZoomForSquareMap(
-                                            metersHeight = workoutViewModel.currentWorkoutInfoHandler.routeHeightMeters,
-                                            metersWidth = workoutViewModel.currentWorkoutInfoHandler.routeWidthMeters,
-                                            sideInPixels = requireActivity().screenWidthInDP
-                                        )
-                                    )
-                                )
-                                findNavController().popBackStack()
-                            }
-
-                        }
-                    }
-                }
+            binding.cancelButton.setOnClickListener {
+                returnToWorkout()
             }
         }
     }
 
     private fun showWorkoutRoute() {
-        GoogleMapDrawer.drawPolyline(resultMapFragment, workoutViewModel.currentWorkoutInfoHandler.route)
+        GoogleMapDrawer.drawPolyline(
+            resultMapFragment,
+            workoutViewModel.currentWorkoutInfoHandler.route
+        )
 
         val minZoom = MapCalculator.minZoomForSquareMap(
             metersHeight = workoutViewModel.currentWorkoutInfoHandler.routeHeightMeters,
@@ -107,9 +97,37 @@ class WorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
         )
 
         GoogleMapDrawer.moveCameraAndZoom(
-            resultMapFragment, workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint, minZoom - 0.5f
+            resultMapFragment,
+            workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint,
+            minZoom - 0.5f
         )
     }
 
+    private fun createWorkoutInfo(): WorkoutInfo {
+        with(workoutViewModel.currentWorkoutInfoHandler) {
+            return WorkoutInfo(
+                type = type,
+                startTime = startTime,
+                finishTime = endTime,
+                distance = routeLengthMeters,
+                route = DatabaseInfoConverter.routeListToString(route),
+                duration = timer.value!!,
+                snapshot = DatabaseInfoConverter.snapshotBitmapToByteArray(snapshot),
+                centerPoint = DatabaseInfoConverter.centerLatLngToString(
+                    workoutViewModel.currentWorkoutInfoHandler.geometricCenterPoint
+                ),
+                zoom = MapCalculator.minZoomForSquareMap(
+                    metersHeight = workoutViewModel.currentWorkoutInfoHandler.routeHeightMeters,
+                    metersWidth = workoutViewModel.currentWorkoutInfoHandler.routeWidthMeters,
+                    sideInPixels = requireActivity().screenWidthInDP
+                )
+            )
+        }
+    }
 
+
+    fun returnToWorkout() {
+        workoutViewModel.currentWorkoutInfoHandler = CurrentWorkoutInfoHandler()
+        findNavController().popBackStack()
+    }
 }

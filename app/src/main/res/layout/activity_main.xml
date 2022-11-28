@@ -12,7 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimaryDark"
         app:title="@string/app_name"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="?attr/colorOnPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,11 +43,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:itemRippleColor="@color/primary"
+        app:itemRippleColor="?attr/colorSecondary"
 
         app:itemIconTint="@drawable/selector_bottom_nav_view"
         app:itemTextColor="@drawable/selector_bottom_nav_view"
-        android:background="@color/secondary_light"
+        android:background="?attr/colorPrimary"
         app:menu="@menu/bottom_nav_menu"
 
         />

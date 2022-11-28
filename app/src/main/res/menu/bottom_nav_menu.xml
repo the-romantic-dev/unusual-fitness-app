@@ -4,13 +4,13 @@
     <item
         android:id="@+id/userInfoFragment"
         android:icon="@drawable/bottom_nav_icon_user_info"
-        android:title="Info"/>
+        android:title="@string/bottom_nav_title_info"/>
     <item
         android:id="@+id/workoutFragment"
         android:icon="@drawable/type_icon_running"
-        android:title="Workout"/>
+        android:title="@string/bottom_nav_title_workout"/>
     <item
         android:id="@+id/workoutsListFragment"
         android:icon="@drawable/bottom_nav_icon_list"
-        android:title="History"/>
+        android:title="@string/bottom_nav_title_history"/>
 </menu>

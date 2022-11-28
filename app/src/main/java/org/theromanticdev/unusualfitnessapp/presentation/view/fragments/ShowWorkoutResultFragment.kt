@@ -64,7 +64,7 @@ class ShowWorkoutResultFragment : Fragment(R.layout.fragment_workout_result) {
 
         binding.workoutStartEndTime.text = "$formattedStartTime - $formattedEndTime"
 
-        binding.saveButton.visibility = View.GONE
+        binding.buttonContainer.visibility = View.GONE
 
     }
 

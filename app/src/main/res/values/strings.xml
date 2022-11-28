@@ -5,4 +5,10 @@
     <string name="result_fragment_workout_result_content_description">workout type</string>
     <string name="result_distance_label">Расстояние:</string>
     <string name="result_distance_units">км</string>
+    <string name="save_workout_result_button">Save</string>
+    <string name="cancel_workout_result_button">Cancel</string>
+    <string name="type_icon_content_description">Type icon</string>
+    <string name="bottom_nav_title_info">Info</string>
+    <string name="bottom_nav_title_workout">Workout</string>
+    <string name="bottom_nav_title_history">History</string>
 </resources>
